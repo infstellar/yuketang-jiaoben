@@ -1,37 +1,106 @@
-# 雨课堂刷课助手
+<!--
+ * @Author: LetMeFly
+ * @Date: 2023-09-22 18:26:15
+ * @LastEditors: LetMeFly
+ * @LastEditTime: 2023-12-22 23:38:00
+-->
+# YuketangAutoPlayer
 
-### 脚本使用：
-点击进入要刷的课程目录，点击开始刷课按钮即可自动运行
+雨课堂刷课脚本（雨课堂视频自动播放），基于浏览器模拟的方式运行，无需虚拟机，甚至可以以无窗口模式运行。（MOOC）
 
-### 已适配雨课堂学校及网址：
-学校：中原工学院，河南大学研究院，广东财经大学，辽宁大学，河北大学，中南大学，电子科技大学，华北电力大学，上海理工大学研究生院及其他院校... 
+视频演示地址：[Bilibili@BV15K4y1F7EN](https://www.bilibili.com/video/BV15K4y1F7EN/)
 
-网址：changjiang.yuketang.cn，yuketang.cn ...
+<!-- <iframe src="//player.bilibili.com/player.html?aid=873783562&bvid=BV15K4y1F7EN&cid=1275745338&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe> -->
 
-### 脚本来历：
-油猴上有好多刷课脚本，不过我试了好几个点赞量很多的脚本却均在雨课堂上并不生效，很佩服这些大佬写上千行代码实现各平台的刷课脚本，也被吓到过，不过自己最终还是实现了雨课堂专用脚本，脚本内容简洁详细，仅100余行（初代），且有一定的代码备注，想学习的同学可以容易查阅。不过，写脚本倒是锻炼自己dom,bom的好机会。学习了很多。
-进一步更新优化了代码结构，不过里面的代码还是很丑，欢迎大家pull。
+[![](img/video-cover.jpg)](https://www.bilibili.com/video/BV15K4y1F7EN/)
 
-欢迎大家补充star：[github地址](https://github.com/Niuwh/yuketang-jiaoben)
+## 使用方法
 
-### 温馨提示：
-好好学习，天天向上，适当刷课，快乐成长^_^
+主要分为四步：
 
-### 免责声明：
-用户脚本（Userscript）是一种程序，通常用 JavaScript 编写，可用于修改网页代码以增强用户的浏览体验。具体用途有添加网页的快捷按钮，控制视频播放速度以及为网站添加其他功能。 在 Firefox 浏览器等桌面浏览器上，Userscript 是通过浏览器扩充功能中的脚本管理器（例如 Greasemonkey ）启用的。
+1. 配置Python环境
+2. 配置浏览器驱动（推荐Chrome浏览器）
+3. 设置刷课信息
+4. 开始刷课
 
-此项目作为开源的用户脚本，遵循用户脚本的编写规范，并且使用纯粹的 javascript 执行代码，不对页面进行任何源码的修改，不附加任何等非法入侵计算机系统的功能，不对客户端计算机进行任何破坏越权控制等行为。
+### 一、配置Python环境
 
-该项目作为开源用户脚本，供各大用户学习、交流、参考、使用，项目所有功能均为开源免费，如果存在收费功能则为其他项目，对于所造成的任何费用损失不负任何责任。
+记得安装好```selenium```
 
-使用本项目即代表用户对此项目的源码和功能有一定的了解，对于所造成的一切后果均由用户自己承担。
+```bash
+pip install selenium
+```
 
-### 脚本作者承诺：
-如脚本无意冒犯了您的著作权，请联系作者进行删除，绝不再进行此类活动侵犯您的权益。
+### 二、配置浏览器驱动
 
-### 贡献者名单：
-+ duck123ducker     解决了雨课堂进入后台意外暂停的bug
-+ insorker          增加错误页面匹配提醒 && 修改倍速函数，支持3倍速
-+ PRO-2684          解决了pro/lms路线雨课堂切屏检测问题
+本项目默认以Chrome为例，以Windows系统为例。其他浏览器原理类似、其他操作系统原理类似。
 
-如有任何问题或提议，欢迎大家访问我的网站：[https://niuwh.cn](https://niuwh.cn) ,里面有我的联系方式。或者博客留言：[https://blog.niuwh.cn](https://blog.niuwh.cn)。
+首先电脑上要安装有[Chrome浏览器](https://www.google.cn/chrome/index.html)（别装到假的Chrome了，之前有同学装了个假Chrome后来问我为什么程序不能正常运行QAQ）
+
+其次需要下载**对应版本的**```ChromeDriver```：[下载地址1](https://chromedriver.chromium.org/downloads)、[下载地址2](https://googlechromelabs.github.io/chrome-for-testing/)、[下载地址3](https://github.com/LetMeFly666/YuketangAutoPlayer/releases/download/v0.0/chromedriver.exe)、[教程1](https://blog.csdn.net/fighting_jiang/article/details/116298853)、[教程2](https://blog.csdn.net/zhoukeguai/article/details/113247342)、[最后的尝试](https://cn.bing.com/search?q=chromedriver%E4%B8%8B%E8%BD%BD)。（版本相差不大的话也无所谓）
+
+将```ChromeDriver.exe```放到```环境变量```中 或 ```脚本(执行)目录```下。
+
+### 三、设置刷课信息
+
+打开```config_template.yaml```，需要你自己修改：
+
+```yaml
+headless = False  # 是否以无窗口模式运行（首次运行建议使用有窗口模式以观察是否符合预期）
+url = 'https://grsbupt.yuketang.cn/pro/lms/84eubUXLHEy/17556639/studycontent'  # 要刷的课的地址（获取方式见README）
+cookie = 'sjfeij2983uyfh84y7498uf98ys8f8u9'  # 打死也不要告诉别人哦（获取方式见README）
+```
+
+重命名```config_template.yaml```为```config.yaml```。
+
+#### ①IF_HEADLESS
+
+是否以无窗口模式运行。建议以有窗口模式运行（那就不用改这一行了）。
+
+若以无窗口模式运行，则不会弹出Chrome浏览器界面，但视频仍能正常刷取。
+
+#### ②COURSE_URL
+
+你要刷的课的URL。
+
+进入雨课堂，进入你想要刷的课程，点击“学习内容”，复制地址栏的url即可。
+
+![how-to-get-url](img/how-to-get-url.jpg)
+
+（注意是https格式的哦）
+
+#### ③COOKIE
+
+**若你觉得COOKIE的获取比较麻烦，你可以选择[跳过这一步](#四开始刷课)并每次重新扫码登录。**扫码登录不支持HEADLESS模式。
+
+COOKIE用来告诉雨课堂你是你。获取方式如下：
+
+登录（你们学校的）雨课堂，```打开开发者工具```（下图的步骤1，也可百度），依次点击“应用→存储→Cookie→ https&#58;&#47;&#47;xxx.yuketang... ”，复制**sessionid**对应的值
+
+![/how-to-get-cookie](img/how-to-get-cookie.jpg)
+
+### 四、开始刷课
+
+```python
+python main.py
+```
+
+## 使用提示
+
+注意，使用过程中可以缩浏览器小窗口去干其他事情，但尽量不要将鼠标移动到程序弹出的浏览器窗口上。因为本项目的运行原理就是模拟用户对浏览器的控制。
+
+**缓存**：若视频播放完毕程序正常结束，则缓存将被自动清理。若视频未播放完毕提前关掉了程序，则Windows系统下缓存位置在```%temp%/chrome_BITS_xxx```下。
+
+## 感谢列表
+
++ 感谢[Github@SwordLikeRain](https://github.com/SwordLikeRain)的[Cookie错误时提示不准确的issue](https://github.com/LetMeFly666/YuketangAutoPlayer/issues/1)（good first issue），使得程序修改后支持了每次扫码登录。
++ 感谢[BiliBili@Bacch](https://space.bilibili.com/21043185)的```AttributeError: 'WebDriver' object has no attribute 'find_elements_by_class_name'```的[报错提醒](https://www.bilibili.com/video/BV15K4y1F7EN/#reply187204230304)，使得程序修改后兼容了selenium≥4.0。
++ 感谢[BiliBili@青鹧不懂蓝桉情](https://space.bilibili.com/1208020409)提供的账号，使得程序修改后支持了```www.yuketang.cn```这种域名下的雨课堂界面。
+
+## 免责声明
+
+本项目的唯一目的是：selenium技术的学习与实践。
+
+禁止用于其他用途，下载后请于24h内删除【Doge】。
+
+若导致账号封禁（目前来看完全不会）或其他因BUG造成的损失，与本项目无关。
