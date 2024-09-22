@@ -9,13 +9,19 @@ from selenium import webdriver
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
+import yaml
 from time import sleep
 import random
+import os
 
+ROOT_PATH = os.path.dirname(os.path.abspath(__file__))
 
-IF_HEADLESS = False  # 是否以无窗口模式运行（首次运行建议使用有窗口模式以观察是否符合预期）
-COURSE_URL = 'https://grsbupt.yuketang.cn/pro/lms/84eubUXLHEy/17556639/studycontent'  # 要刷的课的地址（获取方式见README）
-COOKIE = 'sjfeij2983uyfh84y7498uf98ys8f8u9'  # 打死也不要告诉别人哦（获取方式见README）
+with open(f"{ROOT_PATH}\\config.yaml", "r", encoding='utf-8') as f:
+    config = yaml.load(f, Loader=yaml.FullLoader)
+
+IF_HEADLESS = config['headless']  # 是否以无窗口模式运行（首次运行建议使用有窗口模式以观察是否符合预期）
+COURSE_URL = config['url']  # 要刷的课的地址（获取方式见README）
+COOKIE = config['cookie']  # 打死也不要告诉别人哦（获取方式见README）
 
 
 option = webdriver.ChromeOptions()

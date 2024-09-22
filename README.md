@@ -43,13 +43,15 @@ pip install selenium
 
 ### 三、设置刷课信息
 
-打开```main.py```，代码头部存在以下信息，需要你自己修改：
+打开```config_template.yaml```，需要你自己修改：
 
-```python
-IF_HEADLESS = False  # 是否以无窗口模式运行（首次运行建议使用有窗口模式以观察是否符合预期）
-COURSE_URL = 'https://grsbupt.yuketang.cn/pro/lms/84eubUXLHEy/17556639/studycontent'  # 要刷的课的地址（获取方式见README）
-COOKIE = 'sjfeij2983uyfh84y7498uf98ys8f8u9'  # 打死也不要告诉别人哦（获取方式见README）
+```yaml
+headless = False  # 是否以无窗口模式运行（首次运行建议使用有窗口模式以观察是否符合预期）
+url = 'https://grsbupt.yuketang.cn/pro/lms/84eubUXLHEy/17556639/studycontent'  # 要刷的课的地址（获取方式见README）
+cookie = 'sjfeij2983uyfh84y7498uf98ys8f8u9'  # 打死也不要告诉别人哦（获取方式见README）
 ```
+
+重命名```config_template.yaml```为```config.yaml```。
 
 #### ①IF_HEADLESS
 
